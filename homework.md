@@ -10,3 +10,12 @@
 -What is the use of "-g" while npm install
 -Difference between caret and tilde ( ^ vs ~)
 
+-initialize the git 
+-.gitignore
+-create a remote repo on github
+-push all code to remote origin
+-play with routes and routes extensions   /hello  , /hello/2
+-order of the routes matter a lot
+-Install postman and make API Calls
+-Write logic to handle get,post,put,patch,delete Api call and test it with postman
+
