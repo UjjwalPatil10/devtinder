@@ -12,7 +12,7 @@ if(!isAuthorized){
 
 const userauthMiddleware = (req,res,next)=>{
     console.log("User auth is getting checked..")
-const token = "xyzk"
+const token = "xyz"
 const isAuthorized = token === "xyz"
 
 if(!isAuthorized){

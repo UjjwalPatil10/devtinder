@@ -32,3 +32,4 @@
 -Difference app.use and app.all
 -Write dummy auth middlware for admin
 -Write dummy auth middlware for all user routes , except /user/login
+-Error handleing using app.use("/", (err,req,res,next)=>{})

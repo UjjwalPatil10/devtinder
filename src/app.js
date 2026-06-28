@@ -171,17 +171,46 @@ app.use("/admin",authMiddleware)  // we also use it like this
 // }
 // })
 
-app.get("/user",userauthMiddleware,(req,res,next)=>{
+// app.get("/user",userauthMiddleware,(req,res,next)=>{
+//     res.send("User Data Sent")
+// })
+
+// app.get("/user/login",userauthMiddleware,(req,res,next)=>{
+//     res.send("User Logged in successfully")
+// })
+
+// app.get("/admin/getAllData",(req,res,next)=>{
+//     res.send("All Data Sent")
+// })
+
+// app.get("/admin/deleteAllData",(req,res,next)=>{
+//     res.send("Deleted a Data")
+// })
+
+
+// ======================================================================
+//Logic of DB call and get user Data
+//wild card error handling
+app.use("/",(err,req,res,next)=>{  //to handle err so take err always 1st argument
+
+    if(err){
+        res.status(500).send("Something went wrong")
+    }
+
+})
+
+
+app.get("/getUserData",(req,res)=>{
+//Logic of DB call and get user Data
+try{
+ throw new Error("jgffkfh")
     res.send("User Data Sent")
+}catch(err){
+res.status(500).send("Some error occur Please contact Support team")
+}
 })
 
-app.get("/admin/getAllData",(req,res,next)=>{
-    res.send("All Data Sent")
-})
 
-app.get("/admin/deleteAllData",(req,res,next)=>{
-    res.send("Deleted a Data")
-})
 
 
 
