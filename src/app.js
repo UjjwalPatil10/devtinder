@@ -1,8 +1,12 @@
 const express = require("express")
 const { authMiddleware, userauthMiddleware } = require("./middlewares/auth")
+const connectDB = require("./config/database")
+const User = require("./models/user")
 
 const app = express()
 
+
+connectDB()
 // app.get("/user/:userID/:name/:password",(req,res)=>{
 //     console.log(req.params)
 //     res.send({firstname: "Ujjwal",lastname:"Patil"})
@@ -191,32 +195,57 @@ app.use("/admin",authMiddleware)  // we also use it like this
 // ======================================================================
 //Logic of DB call and get user Data
 //wild card error handling
-app.use("/",(err,req,res,next)=>{  //to handle err so take err always 1st argument
+// app.use("/",(err,req,res,next)=>{  //to handle err so take err always 1st argument
 
-    if(err){
-        res.status(500).send("Something went wrong")
-    }
+//     if(err){
+//         res.status(500).send("Something went wrong")
+//     }
 
-})
+// })
 
 
-app.get("/getUserData",(req,res)=>{
-//Logic of DB call and get user Data
+// app.get("/getUserData",(req,res)=>{
+// //Logic of DB call and get user Data
+// try{
+//  throw new Error("jgffkfh")
+//     res.send("User Data Sent")
+// }catch(err){
+// res.status(500).send("Some error occur Please contact Support team")
+// }
+// })
+
+//Create a signup post API 
+
+app.post("/signup",async(req,res)=>{
+    const user = new User({  //here we create a instance of model User by new keyword
+        firstName:"Shiv22",
+        lastName :"shankar",
+        emailId :"shiv@gmail.com",
+        password :"1234"
+    })
+
 try{
- throw new Error("jgffkfh")
-    res.send("User Data Sent")
+  await  user.save()
+   res.send({message:"User Created Successfully:",user})
 }catch(err){
-res.status(500).send("Some error occur Please contact Support team")
+    res.status(400).send("Error saving the user : " , err.message)
 }
 })
 
 
 
 
-
-
+connectDB()
+.then(()=>{
+console.log("MongoDB Connected Successfully")
 app.listen(3000, () => {
     console.log("Server is listening on port 3000..")
 })
+}).catch((err)=>{
+console.log("Error connecting mongoD")
+})
+
+
+
 
 //npm i -g nodemon    //its automatically refresh the Server when we do our changes
