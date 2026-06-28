@@ -216,13 +216,21 @@ app.use("/admin",authMiddleware)  // we also use it like this
 
 //Create a signup post API 
 
+app.use(express.json())  //its  a middleware given by expressjs which handle the JSON object and convert
+ //it into the JS Object
+
+
 app.post("/signup",async(req,res)=>{
-    const user = new User({  //here we create a instance of model User by new keyword
-        firstName:"Shiv22",
-        lastName :"shankar",
-        emailId :"shiv@gmail.com",
-        password :"1234"
-    })
+
+// console.log(req.body)
+    // const user = new User({         //here we create a instance of model User by new keyword
+    //     firstName:"Shiv22",
+    //     lastName :"shankar",
+    //     emailId :"shiv@gmail.com",
+    //     password :"1234"
+    // })
+
+        const user = new User(req.body) // here we make API Dynamic to receive data from the Users
 
 try{
   await  user.save()
@@ -230,6 +238,7 @@ try{
 }catch(err){
     res.status(400).send("Error saving the user : " , err.message)
 }
+
 })
 
 

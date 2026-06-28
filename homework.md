@@ -42,3 +42,5 @@
 -create POST /signup API to add data to Database
 -Push Some Documents using API calls from Postman
 -Error handling during try catch
+
+-Difference between Js object and JSON object
