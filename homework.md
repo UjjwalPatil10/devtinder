@@ -44,3 +44,8 @@
 -Error handling during try catch
 
 -Difference between Js object and JSON object
+-Add the express.json middleware to your app
+-Make your signuP API DYNAMIC to receive data from the end User
+-User.findOne() with dupicate email ids , see which object returned
+-API - Get user by email
+-API - feed API - GET/feed - get all the users from the Database

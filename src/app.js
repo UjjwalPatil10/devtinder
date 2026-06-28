@@ -162,7 +162,7 @@ connectDB()
 //Handle Auth Middleware for all Get,POST... so we didn't write auth logic again and again
 //middleware goes to particular route 
 
-app.use("/admin",authMiddleware)  // we also use it like this
+app.use("/admin", authMiddleware)  // we also use it like this
 // app.use("/admin",(req,res,next)=>{
 //     console.log("Admin auth is getting checked..")
 // const token = "xyz"
@@ -217,12 +217,45 @@ app.use("/admin",authMiddleware)  // we also use it like this
 //Create a signup post API 
 
 app.use(express.json())  //its  a middleware given by expressjs which handle the JSON object and convert
- //it into the JS Object
+//it into the JS Object
+
+//Get User By email 
+app.get("/user", async (req, res) => {
+    const userEmail = req.body.emailId;
+    console.log(userEmail)
+    try {
+        // const users = await User.find({ emailId:userEmail }) //here we get user by email
+        const users = await User.findOne({ emailId:userEmail }) //here we get user by email
+if(users.length === 0){
+    res.status(404).send("User Not Found")
+
+}else{
+
+    return res.send(users)
+}
+    } catch (err) {
+        res.status(400).send("Something went Wrong")
+    }
+})
+
+//Get all feed users
+app.get("/feed", async (req, res) => {
+    const userEmail = req.body.emailId;
+    console.log(userEmail)
+  try{
+    const users = await User.find({})
+    return res.send(users)
+
+  }catch(err){
+        res.status(400).send("Something went Wrong")
+
+  }
+})
 
 
-app.post("/signup",async(req,res)=>{
+app.post("/signup", async (req, res) => {
 
-// console.log(req.body)
+    // console.log(req.body)
     // const user = new User({         //here we create a instance of model User by new keyword
     //     firstName:"Shiv22",
     //     lastName :"shankar",
@@ -230,14 +263,14 @@ app.post("/signup",async(req,res)=>{
     //     password :"1234"
     // })
 
-        const user = new User(req.body) // here we make API Dynamic to receive data from the Users
+    const user = new User(req.body) // here we make API Dynamic to receive data from the Users
 
-try{
-  await  user.save()
-   res.send({message:"User Created Successfully:",user})
-}catch(err){
-    res.status(400).send("Error saving the user : " , err.message)
-}
+    try {
+        await user.save()
+        res.send({ message: "User Created Successfully:", user })
+    } catch (err) {
+        res.status(400).send("Error saving the user : ", err.message)
+    }
 
 })
 
@@ -245,14 +278,14 @@ try{
 
 
 connectDB()
-.then(()=>{
-console.log("MongoDB Connected Successfully")
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000..")
-})
-}).catch((err)=>{
-console.log("Error connecting mongoD")
-})
+    .then(() => {
+        console.log("MongoDB Connected Successfully")
+        app.listen(3000, () => {
+            console.log("Server is listening on port 3000..")
+        })
+    }).catch((err) => {
+        console.log("Error connecting mongoD")
+    })
 
 
 
