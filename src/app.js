@@ -238,6 +238,23 @@ if(users.length === 0){
     }
 })
 
+//Delete user by id 
+
+app.delete("/user",async(req,res)=>{
+    const userId = req.body.userId
+    try{
+ console.log("userId:",userId)
+    const user =  await User.findByIdAndDelete({_id: userId})
+    // const user =  await User.findByIdAndDelete(userId)   
+     return res.send({message:"User Deleted Successfully:",user})
+    }catch(err){
+res.status(400).send("Something went wrong")
+    }
+   
+
+
+})
+
 //Get all feed users
 app.get("/feed", async (req, res) => {
     const userEmail = req.body.emailId;
@@ -275,6 +292,26 @@ app.post("/signup", async (req, res) => {
 })
 
 
+//Update data of the user
+
+app.patch("/user",async(req,res)=>{
+    const data = req.body;
+    const userId = req.body.userId
+    try{
+
+        const user = await User.findByIdAndUpdate({_id : userId},data,{
+            returnDocument:"after",
+            runValidators : true
+        })    //3rd argument is options argument
+
+        res.send({message:"User Updated Successfully:",user})
+
+
+    }catch(err){
+        return res.status(400).send("Update Failed:"+err.message)
+    }
+
+})
 
 
 connectDB()
