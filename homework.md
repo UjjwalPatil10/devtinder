@@ -69,3 +69,9 @@
 -Install validator
 -Explore validator library function and use validator functions for password,email
 -NERVER TRUST req.body
+
+-validate DATA in signup API
+-Install npi i bcrypt
+-create passwordHash using bcrypt.hash and save user with encrypted password
+-Create Login API
+-Compare passwords and throw errors if email and password is invalid

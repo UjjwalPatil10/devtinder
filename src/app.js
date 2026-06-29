@@ -2,7 +2,9 @@ const express = require("express")
 const { authMiddleware, userauthMiddleware } = require("./middlewares/auth")
 const connectDB = require("./config/database")
 const User = require("./models/user")
-
+const { validateSignupData } = require("./utils/validation")
+const bcrypt = require("bcrypt")
+const { isSurrogatePair } = require("validator")
 const app = express()
 
 
@@ -272,6 +274,17 @@ app.get("/feed", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
 
+
+
+    try {
+        const{firstName,lastName,emailId,password} = req.body
+            //Validation of Data
+validateSignupData(req)
+    //Encrypt the password
+const passwordHash = await bcrypt.hash(password,10)
+// console.log("passwordHash:",passwordHash)
+
+
     // console.log(req.body)
     // const user = new User({         //here we create a instance of model User by new keyword
     //     firstName:"Shiv22",
@@ -280,9 +293,14 @@ app.post("/signup", async (req, res) => {
     //     password :"1234"
     // })
 
-    const user = new User(req.body) // here we make API Dynamic to receive data from the Users
-
-    try {
+    // const user = new User(req.body) // here we make API Dynamic to receive data from the Users
+    const user = new User({
+        firstName,
+        lastName,
+        emailId,
+        password:passwordHash
+        
+    }) // here we make API Dynamic to receive data from the Users
         await user.save()
         res.send({ message: "User Created Successfully:", user })
     } catch (err) {
@@ -291,6 +309,28 @@ app.post("/signup", async (req, res) => {
 
 })
 
+//CREATE login API for user
+app.post("/login",async(req,res)=>{
+    try{
+        const {emailId,password}=req.body  // data that user enter and send to DB
+  //get user by emailId
+    const user = await User.findOne({emailId:emailId})
+    if(!user){
+        throw new Error("Invalid Credentials!")
+    }
+
+    const isPasswordValid = await bcrypt.compare(password,user.password)
+    if(isPasswordValid){
+         res.send({message:"Login Successful!",user})
+    }else{
+        throw new Error("Invalid Credentials!")
+    }
+    }catch(err){
+        res.status(400).send("ERROR:"+ err.message)
+    }
+
+
+})
 
 //Update data of the user
 
