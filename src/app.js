@@ -294,11 +294,30 @@ app.post("/signup", async (req, res) => {
 
 //Update data of the user
 
-app.patch("/user",async(req,res)=>{
+app.patch("/user/:userId",async(req,res)=>{
     const data = req.body;
-    const userId = req.body.userId
-    try{
+    // const userId = req.body.userId
+    const userId = req.params?.userId
 
+    try{
+const ALLOWED_UPDATES = [    //beacuse we dont't want update emailId again n again
+    // "userId",
+    "photoUrl",
+    "about",
+    "gender",
+    "age",
+    "skills"
+]
+const isAllowedUpdates = Object.keys(data).every((k)=>{
+  return  ALLOWED_UPDATES.includes(k)
+})
+if(!isAllowedUpdates){
+    throw new Error("Update Not allowed")
+}
+
+if(data.skills.length > 10){
+    throw new Error("Skills cannot be greater than 10")
+}
         const user = await User.findByIdAndUpdate({_id : userId},data,{
             returnDocument:"after",
             runValidators : true
