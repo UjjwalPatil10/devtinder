@@ -67,4 +67,5 @@
 -Add API level validation on patch request and signup post API
 -DATA SANITIZING - Add API validation for each field 
 -Install validator
--Explore validator library function and use validator functions for password,email,
+-Explore validator library function and use validator functions for password,email
+-NERVER TRUST req.body
